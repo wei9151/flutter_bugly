@@ -97,10 +97,15 @@ public class FlutterBuglyPlugin implements FlutterPlugin, MethodCallHandler, Act
                         }
                     } : null;
                 }
+                CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(activity.getApplicationContext());
+                if (call.hasArgument("appVersion") && call.argument("appVersion") != null) {
+                    //System.out.println("getChat appVersion: " + call.argument("appVersion"));
+                    strategy.setAppVersion(call.argument("appVersion").toString());
+                }
                 Beta.canShowUpgradeActs.add(activity.getClass());
 
                 String appId = call.argument("appId").toString();
-                Bugly.init(activity.getApplicationContext(), appId, BuildConfig.DEBUG);
+                Bugly.init(activity.getApplicationContext(), appId, BuildConfig.DEBUG, strategy);
                 if (call.hasArgument("channel")) {
                     String channel = call.argument("channel");
                     if (!TextUtils.isEmpty(channel))

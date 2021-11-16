@@ -33,6 +33,7 @@ class FlutterBugly {
     int upgradeCheckPeriod = 0, //升级检查周期设置,单位秒
     int checkUpgradeCount = 1, //UpgradeInfo为null时，再次check的次数，经测试1为最佳
     bool customUpgrade = true, // 是否自定义升级，这里默认true为了兼容老版本
+    String? appVersion, // app版本号+buildNumber，android使用
   }) async {
     assert((Platform.isAndroid && androidAppId != null) ||
         (Platform.isIOS && iOSAppId != null));
@@ -50,6 +51,7 @@ class FlutterBugly {
       "initDelay": initDelay,
       "upgradeCheckPeriod": upgradeCheckPeriod,
       "customUpgrade": customUpgrade,
+      "appVersion": appVersion,
     };
     final dynamic result = await _channel.invokeMethod('initBugly', map);
     Map resultMap = json.decode(result);
